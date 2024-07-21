@@ -4,6 +4,9 @@ long timeout = 10 * 60 * ((long) 1000); /*10 minutes*/
 
 void setup() {
   pinMode(2, OUTPUT);
+}
+
+void loop() {
   digitalWrite(2, HIGH);
   
   bool reisub = false;
@@ -23,7 +26,16 @@ void setup() {
   
   Serial.end();
 
-  if(!reisub)  return;
+  if(!reisub) { // deactivate
+    while(true) {
+      digitalWrite(2, HIGH);
+      delay(1000);
+      digitalWrite(2, LOW);
+      delay(1000);
+    }
+  }
+
+  
   digitalWrite(2, LOW);
 
   delay(5000);
@@ -52,9 +64,12 @@ void setup() {
 
   // End the Keyboard library
   Keyboard.end();
-}
-
-void loop() {
+  
+  digitalWrite(2, HIGH);
+  delay(1000);
+  digitalWrite(2, LOW);
+  delay(1000);
+  
   digitalWrite(2, HIGH);
   delay(1000);
   digitalWrite(2, LOW);
