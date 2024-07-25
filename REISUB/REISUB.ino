@@ -1,13 +1,15 @@
 #include <Keyboard.h>
 
+#define LED_PIN 2
+
 long timeout = 10 * 60 * ((long) 1000); /*10 minutes*/
 
 void setup() {
-  pinMode(2, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
 }
 
 void loop() {
-  digitalWrite(2, HIGH);
+  digitalWrite(LED_PIN, HIGH);
   
   bool reisub = false;
   
@@ -28,15 +30,15 @@ void loop() {
 
   if(!reisub) { // deactivate
     while(true) {
-      digitalWrite(2, HIGH);
+      digitalWrite(LED_PIN, HIGH);
       delay(1000);
-      digitalWrite(2, LOW);
+      digitalWrite(LED_PIN, LOW);
       delay(1000);
     }
   }
 
   
-  digitalWrite(2, LOW);
+  digitalWrite(LED_PIN, LOW);
 
   delay(5000);
   
@@ -65,14 +67,14 @@ void loop() {
   // End the Keyboard library
   Keyboard.end();
   
-  digitalWrite(2, HIGH);
+  digitalWrite(LED_PIN, HIGH);
   delay(1000);
-  digitalWrite(2, LOW);
+  digitalWrite(LED_PIN, LOW);
   delay(1000);
   
-  digitalWrite(2, HIGH);
+  digitalWrite(LED_PIN, HIGH);
   delay(1000);
-  digitalWrite(2, LOW);
+  digitalWrite(LED_PIN, LOW);
   delay(1000);
 }
 

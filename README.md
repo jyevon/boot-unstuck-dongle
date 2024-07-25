@@ -7,6 +7,7 @@ __Please note:__ A reboot of the system is not detected unless the dongle tempor
 - Linux system that tends to get stuck during loading the Kernel or starting the OS
 - Arduino board (or equivalent) that is [supported by the Keyboard.h library](https://www.arduino.cc/reference/en/language/functions/usb/keyboard/#_compatible_hardware), e.g. Arduino Micro or Pro Micro
   - If your board doesn't have a built-in, controllable LED: Add an LED with adequate resistor
+  - You might need to adapt `LED_PIN` to your board.
 - USB cable to connect the two
 
 ## Set up the linux system
