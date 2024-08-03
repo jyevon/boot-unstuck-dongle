@@ -5,7 +5,7 @@ __Please note:__ A reboot of the system is not detected unless the dongle tempor
 
 ## Requirements
 - Linux system that tends to get stuck during loading the Kernel or starting the OS
-- Arduino board (or equivalent) that is [supported by the Keyboard.h library](https://www.arduino.cc/reference/en/language/functions/usb/keyboard/#_compatible_hardware), e.g. Arduino Micro or Pro Micro
+- Arduino board (or equivalent) that is [supported by the Keyboard.h](https://www.arduino.cc/reference/en/language/functions/usb/keyboard/#_compatible_hardware) and [rocketscream/Low-Power](https://github.com/rocketscream/Low-Power) libraries, e.g. Arduino Micro or Pro Micro
   - If your board doesn't have a built-in, controllable LED: Add an LED with adequate resistor
   - You might need to adapt `LED_PIN` to your board.
 - USB cable to connect the two
@@ -46,9 +46,8 @@ You can determine the tty name of the Arduino and use, e.g., crontab and screen 
 You might use minicom or picocom as an alternative to screen for the serial connection. Instead of crontab you could, e.g., create a systemd service or add a script to `/etc/init.d/`. If you come up with an alternative setup, consider sharing it in a pull request so that instructions can be added here.
 
 ## Dongle states
-| No. | LED indicator         | Dongle state                                           | Following state |
-|:---:| --------------------- | ------------------------------------------------------ |:---------------:|
-| 1   | > 1 s on              | waiting for serial connection or timeout               | 2 or 4          |
-| 2   | > 1 s off             | issuing REISUB key sequence                            | 3               |
-| 3   | blink 2 times         | REISUB issued                                          | 1               |
-| 4   | blink until power off | serial connection established (once), reboot cancelled | -               |
+| No. | LED indicator     | Dongle state                                           | Following state |
+|:---:| ------------------| ------------------------------------------------------ |:---------------:|
+| 1   | blink (1s period) | waiting for serial connection or timeout               | 2 or 3          |
+| 2   | > 0,5 s on        | issuing REISUB key sequence                            | 1               |
+| 3   | > 0,5 s off       | serial connection established (once), reboot cancelled | -               |

@@ -1,4 +1,5 @@
 #include <Keyboard.h>
+#include "LowPower.h"
 
 #define LED_PIN 2
 
@@ -12,8 +13,6 @@ void loop() {
   bool reisub = false;
   
   // === wait for serial connection or timeout ===
-  digitalWrite(LED_PIN, HIGH);
-  
   Serial.begin(9600);
   timeout += millis();
   while(!Serial) {
@@ -22,7 +21,7 @@ void loop() {
       break;
     }
 
-    delay(100);
+    blinkOnce(); // also causes delay
   }
 
   
@@ -34,23 +33,26 @@ void loop() {
     
     Serial.end();
 
-    // become inactive
-    while(true)  blinkOnce();
+    // Give system time to detect serial disconnected
+    delay(5000);
+
+    digitalWrite(LED_PIN, LOW);
+
+    // go to sleep, don't let anyone wake you
+    // NOTE: Arduino won't be recognized as USB device until unplugged and reconnected
+    while(true)  LowPower.powerDown(SLEEP_FOREVER, ADC_OFF, BOD_OFF);
   }
+
+  Serial.end();
 
   
   // === issue REISUB key sequence ===
-  digitalWrite(LED_PIN, LOW);
+  digitalWrite(LED_PIN, HIGH);
 
   // Give system time to detect serial disconnected
   delay(5000);
 
   issueREISUB();
-
-  
-  // === REISUB issued ===
-  blinkOnce();
-  blinkOnce();
 }
 
 // Connect as keyboard, send REISUB key sequence, disconnect
@@ -92,7 +94,7 @@ void typeKey(char key) {
 // Turn LED on and off once, with delay
 void blinkOnce() {
   digitalWrite(LED_PIN, HIGH);
-  delay(1000);
+  delay(500);
   digitalWrite(LED_PIN, LOW);
-  delay(1000);
+  delay(500);
 }
