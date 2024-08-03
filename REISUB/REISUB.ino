@@ -15,6 +15,7 @@ void loop() {
   digitalWrite(LED_PIN, HIGH);
   
   Serial.begin(9600);
+  timeout += millis();
   while(!Serial) {
     if(millis() > timeout) {
       reisub = true;
