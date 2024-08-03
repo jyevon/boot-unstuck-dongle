@@ -5,6 +5,8 @@
 
 long timeout = 10 * 60 * ((long) 1000); // 10 minutes
 
+int reisubsIssued = 0;
+
 void setup() {
   pinMode(LED_PIN, OUTPUT);
 }
@@ -29,7 +31,11 @@ void loop() {
   if(!reisub) {
     Serial.print("Reboot prevented. ");
     Serial.print((timeout - millis()) / 1000);
-    Serial.println(" seconds were left.");
+    Serial.print(" seconds were left.");
+
+    Serial.print(" REISUB had been issued ");
+    Serial.print(reisubsIssued);
+    Serial.println(" times since power on.");
     
     Serial.end();
 
@@ -53,6 +59,7 @@ void loop() {
   delay(5000);
 
   issueREISUB();
+  reisubsIssued++;
 }
 
 // Connect as keyboard, send REISUB key sequence, disconnect

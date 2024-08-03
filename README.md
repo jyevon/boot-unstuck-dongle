@@ -27,12 +27,18 @@ You can determine the tty name of the Arduino and use, e.g., crontab and screen 
 2. Test serial connection with that tty:
     - Open serial port with screen: `sudo screen /dev/ttyACM0 9600`
     - You should now see the Arduino's response:
-`Reboot prevented. X seconds were left.`
+`Reboot prevented. X seconds were left. REISUB had been issued Y times since power on.`
     - Exit the screen session: Press <kbd>Ctrl</kbd> + <kbd>A</kbd> followed by <kbd>K</kbd> and <kbd>Y</kbd>.
 
-3. Add entry to root crontab:
+3. Prepare [`screen.sh`](screen.sh) on the system:
+    - Create and change to a directory where it can remain: `mkdir boot-unstuck-dongle && cd boot-unstuck-dongle`
+    - Clone the repository: `git clone https://github.com/jyevon/boot-unstuck-dongle.git .`
+    - Or download the single file instead: `wget https://github.com/jyevon/boot-unstuck-dongle/raw/main/screen.sh`
+    - Open `screen.sh` with a text editor and change `tty=/dev/ttyACM0` to the tty determined above: `nano screen.sh`
+
+4. Add entry to root crontab:
     - Open root's crontab: `sudo crontab -e`
-    - Add a line `@reboot` for `screen -dmS bootUnstuckDongle /dev/ttyACM0 9600` and save the file.  
+    - Add a line `@reboot` for `bash /path/to/boot-unstuck-dongle/screen.sh` and save the file.  
     Example:
 ```cron
 # Edit this file to introduce tasks to be run by cron.
@@ -40,8 +46,10 @@ You can determine the tty name of the Arduino and use, e.g., crontab and screen 
 # [...]
 #
 # m h  dom mon dow   command
-@reboot              screen -dmS bootUnstuckDongle /dev/ttyACM0 9600
+@reboot              bash /home/user/boot-unstuck-dongle/screen.sh
 ```
+
+`screen.sh` will create a log file within its parent directory. Within this log, you can e.g. look up how many REISUBs it took to successfully boot the system.
 
 You might use minicom or picocom as an alternative to screen for the serial connection. Instead of crontab you could, e.g., create a systemd service or add a script to `/etc/init.d/`. If you come up with an alternative setup, consider sharing it in a pull request so that instructions can be added here.
 
